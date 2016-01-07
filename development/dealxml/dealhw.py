@@ -32,12 +32,12 @@ def isnumeric(s):
 def unzip():
     for root_no, dirs_no, files in os.walk('./huawei'):
         for name in files:
-            if name.endswith('.zip'):
+            if name.endswith('.zip') and name.startswith(current_date):
                 with zipfile.ZipFile(name, 'r') as zfile:
                     for _name in zfile.namelist():
                         extract_archiver(db, _name, zfile, current_date)
-            elif name.endswith('rar'):
-                with rarfile.RarFile(os.path.join('./huawei',name), 'r') as rfile:
+            elif name.endswith('rar') and name.startswith(current_date):
+                with rarfile.RarFile(os.path.join('./huawei', name), 'r') as rfile:
                     for _name in rfile.namelist():
                         extract_archiver(db, _name, rfile, current_date)
 

@@ -48,7 +48,6 @@ for DSN in DSN_LIST:
     for tbname_t in tbnames:
         tb_list.append(tbname_t[0])
     # 以ENODEBFUNCTION作为基准表，按ENODEBID筛选出佛山，佛山ENODEBID范围为7A000~7A7FF、86800~86FFF，其他表按照筛选表的PHYID筛选
-
     df_right_dict = {}
     for name in ['LA0O', 'LCAG', 'LK0Q']:
         tbname = 't_C_ENODEBFUNCTION' + '_' + name
