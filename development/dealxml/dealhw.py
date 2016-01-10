@@ -32,11 +32,12 @@ def isnumeric(s):
 def unzip():
     for root_no, dirs_no, files in os.walk('./huawei'):
         for name in files:
+            print(name)
             if name.endswith('.zip') and name.startswith(current_date):
-                with zipfile.ZipFile(name, 'r') as zfile:
+                with zipfile.ZipFile(os.path.join('./huawei', name), 'r') as zfile:
                     for _name in zfile.namelist():
                         extract_archiver(db, _name, zfile, current_date)
-            elif name.endswith('rar') and name.startswith(current_date):
+            elif name.endswith('.rar') and name.startswith(current_date):
                 with rarfile.RarFile(os.path.join('./huawei', name), 'r') as rfile:
                     for _name in rfile.namelist():
                         extract_archiver(db, _name, rfile, current_date)
@@ -55,6 +56,7 @@ def extract_archiver(db, filename, parentzip, idate):
                 if name.endswith(tuple(extension)):
                     extract_archiver(db, name, rfile, idate)
     elif filename.endswith('.gz'):
+        print(filename)
         gfiledata = io.BytesIO(parentzip.read(filename))
         gfile = gzip.GzipFile(fileobj=gfiledata, mode='rb')
         tree = etree.iterparse(io.BytesIO(gfile.read()))
@@ -82,9 +84,9 @@ def hw_import(db, root, idate):
                         for item_element in item_field.iterchildren(tag=etree.Element):
                             for _field in item_element.iterchildren(tag=etree.Element):
                                 field_list.append(isnumeric(str(_field.text).strip()))
-                        collection_dict[item_field.tag]=field_list
+                        collection_dict[item_field.tag] = field_list
                     else:
-                        collection_dict[item_field.tag]=isnumeric(str(item_field.text).strip())
+                        collection_dict[item_field.tag] = isnumeric(str(item_field.text).strip())
             if collection_dict:
                 collection_dict.update({'iDate': idate, 'eNodeB_Id': isnumeric(eNodeBId), 'eNodeBId_Name': name})
                 collections_list.append(collection_dict)
